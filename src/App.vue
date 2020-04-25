@@ -25,7 +25,7 @@ export default {
     return {
       questions: [],
       index: 0,
-      totalNumberOfQuestions: 2,
+      totalNumberOfQuestions: 10,
       totalCorrect: 0,
       showResult: false,
     };

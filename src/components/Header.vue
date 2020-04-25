@@ -16,7 +16,6 @@
           <span aria-hidden="true"></span>
         </a>
       </div>
-
       <div id="main-navbar" :class="{ 'navbar-menu': true, 'is-active': showNavbar}" >
           <div class="navbar-start">
               <a href="" class="navbar-item">
