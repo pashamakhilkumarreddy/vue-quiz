@@ -136,7 +136,7 @@ export default {
         this.isCorrectAnswer = true;
         this.incrementScore();
       }
-      if (this.index < this.totalQuestions) {
+      if ((this.index + 1) < this.totalQuestions) {
         setTimeout(() => this.nextQuestion(), 1000);
       } else {
         this.submitQuiz();

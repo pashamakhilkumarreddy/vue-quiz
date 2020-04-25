@@ -2,11 +2,11 @@
   <div id="app">
     <Header />
     <main class="container" id="app">
-      <QuestionBox v-if="questions.length && index < totalNumberOfQuestions"
+      <QuestionBox v-if="questions.length && index < totalNumberOfQuestions && !showResult"
       :totalQuestions="totalNumberOfQuestions" :index="index"
       :question="questions[index]" :next="next" :incrementScore="incrementScore"
       :getTotalScore="getTotalScore" :submitQuiz="submitQuiz" />
-      <Result v-if="index > totalNumberOfQuestions"
+      <Result v-if="showResult"
         :score="totalCorrect" :total="totalNumberOfQuestions" :restartQuiz="restartQuiz" />
       <router-view></router-view>
     </main>
@@ -37,8 +37,25 @@ export default {
     Result,
   },
   methods: {
+    async getQuizQuestions() {
+      this.index = 0;
+      this.totalCorrect = 0;
+      this.showResult = false;
+      this.questions.splice(0, this.questions.length);
+      try {
+        const questions = await fetch(`https://opentdb.com/api.php?amount=${this.totalNumberOfQuestions}`, {
+          method: 'get',
+        });
+        const formattedQuestions = await questions.json();
+        this.questions = formattedQuestions.results;
+      } catch (err) {
+        console.error(err);
+      }
+    },
     next() {
-      this.index += 1;
+      if (this.index < this.totalNumberOfQuestions) {
+        this.index += 1;
+      }
     },
     incrementScore() {
       this.totalCorrect += 1;
@@ -50,24 +67,15 @@ export default {
       this.showResult = true;
     },
     restartQuiz() {
-      this.questions.splice(0, this.questions.length);
+      this.getQuizQuestions();
     },
   },
+
   async mounted() {
-    try {
-      const questions = await fetch(`https://opentdb.com/api.php?amount=${this.totalNumberOfQuestions}`, {
-        method: 'get',
-      });
-      const formattedQuestions = await questions.json();
-      this.questions = formattedQuestions.results;
-    } catch (err) {
-      console.error(err);
-    }
+    this.getQuizQuestions();
   },
 };
-
 </script>
-
 <style>
   *,
   *::after,

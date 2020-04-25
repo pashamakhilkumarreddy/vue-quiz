@@ -1,5 +1,5 @@
 <template>
-  <div class="columns iscentered is-vcentered" v-if="showResult">
+  <div class="columns iscentered is-vcentered">
     <div class="column is-10 m-auto mt-6">
       <article class="message is-info">
         <div class="message-header">
@@ -32,11 +32,9 @@ export default {
   },
   data() {
     return {
-      showResult: false,
     };
   },
   mounted() {
-    this.showResult = true;
   },
   methods: {
     getMessage() {
@@ -51,7 +49,6 @@ export default {
       return message;
     },
     closeMessage() {
-      this.showResult = !this.showResult;
       this.restartQuiz();
     },
   },
